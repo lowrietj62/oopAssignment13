@@ -1,5 +1,5 @@
 # oopAssignment13
-Repository for Assignment 13 for Team Cap'n Crunch
+Repository for Assignment 13
 
 Identify the classes needed for this system
     customer
