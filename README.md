@@ -1,23 +1,37 @@
 # oopAssignment13
-Repository for Assignment 13
 
-Identify the classes needed for this system
-    customer
-    skiRentalShop
-    inventory
-    skis
-    snowboards
-Determine the data each class should store
-    #IN PROGRESS
-Determine the methods each class should have
-    #IN PROGRESS
-Design relationships between classes
-    #IN PROGRESS
-Write and test your classes in Python
-    #IN PROGRESS
-Write a README file
-    #IN PROGRESS
+Repository for Assignment 13 - Object Oriented Programming with a ski rental system.
 
-    OS
+## Overview
 
-Changes done
+The assignment is to create a ski rental shop system using Object Oriented Principles (OOP) in Python. The system manages customers, inventory, skis, and snowboards through a set of well-defined classes.
+
+## Classes
+
+- Customer: Represents the customer
+- Ski Rental Shop: The main class for handling anything to do with the ski rental shop
+- Inventory: Base class for tracking available rental equipment
+- Skis: Class for handling anything to do with skis seperately
+- Snowboards: Class for handling anything to do with snowboards seperately
+
+## Progress
+
+| Task | Status |
+|------|--------|
+| Identify the classes needed for this system | Done! |
+| Determine the data each class should store | In Progress |
+| Determine the methods each class should have | In Progress |
+| Design relationships between the classes, if any | In Progress |
+| Write and test those classes | In Progress |
+| Write a README.md file for the assignment | In Progress |
+
+## Requirements
+
+- Python 3.x (Doesn't matter which version of Python you use to run this so long as it's Python Version 3)
+- No external dependencies
+
+## Usage
+
+```bash
+python main.py
+```
