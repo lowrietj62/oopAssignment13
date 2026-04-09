@@ -1,4 +1,4 @@
-class Ski:
+class Ski():
     
     def __init__(self):
         pass
