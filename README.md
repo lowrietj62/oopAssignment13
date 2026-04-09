@@ -32,11 +32,11 @@ The assignment is to create a ski rental shop system using Object Oriented Princ
 
 ## Relationships between classes
 
-Ski Rental Shop: Pulls from Inventory
-Skis: Pulls from Inventory
-Snowboards: Pulls from Inventory
-Customer: Pulls from Ski Rental Shop
-Main: Pulls from Skis, Snowboards, and Customer
+- Ski Rental Shop: Pulls from Inventory
+- Skis: Pulls from Inventory
+- Snowboards: Pulls from Inventory
+- Customer: Pulls from Ski Rental Shop
+- Main: Pulls from Skis, Snowboards, and Customer
 
 
 ## Progress
