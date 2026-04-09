@@ -8,36 +8,39 @@ The assignment is to create a ski rental shop system using Object Oriented Princ
 
 ## Classes
 
-- Customer: Represents the customer
-- Ski Rental Shop: The main class for handling anything to do with the ski rental shop
+- Rental: Represents the rental object
+- Rental Shop: The main class for handling anything to do with the ski rental shop
 - Inventory: Base class for tracking available rental equipment
+- Equipment: Base class for skis and snowboards
 - Skis: Class for handling anything to do with skis seperately
 - Snowboards: Class for handling anything to do with snowboards seperately
-- Main
-
 
 ## Data for each Class
 
-- Customer: Current items in cart, current # of rented skis and snowboards, current rental period type, best price recommendation, and bill
-- Ski Rental Shop: Family Rental Promotion and coupon code
-- Inventory: Maximum # of skis and snowboards, and current # of skis and snowboards
-- Skis: hourly, daily and weekly rate
-- Snowboards: hourly, daily and weekly rate
-- Main
-
+- Rental: equipment_type, quantity, period_type, duration, coupon_code
+- Rental_Shop: Instance of Inventory class, List of active rentals
+- Inventory: Available Skis/Snowboards
+- Equipment: equipment_id, rental_rate_hourly, rental_rate_daily, rental_rate_weekly
+- Skis: Hard-coded rates
+- Snowboards: Hard-coded rates
 
 ## Methods each class has
 
-
+- Rental: calculate_bill() [This is where the best price logic lives, family discount and coupon discount checks as well]
+- Rental_Shop: display_inventory(), process_rental(...), return_rental(rental object) [This will trigger billing]
+- Inventory: check_availability(type, quantity), update_stock(type, quantity)
+- Equipment: get_rates(), equipment_type()
+- Skis: Override equipment_type()
+- Snowboards: Override equipment_type()
 
 ## Relationships between classes
 
-- Inventory
-- Ski Rental Shop: Pulls from Inventory
-- Skis: Pulls from Inventory
-- Snowboards: Pulls from Inventory
-- Customer: Pulls from Ski Rental Shop
-- Main: Pulls from Skis, Snowboards, and Customer
+- Rental: Its own object (represents the rental item)
+- Rental Shop: Pulls from Inventory
+- Inventory: Base class for rental shop
+- Equipment: Base class for skis and snowboards
+- Skis: Pulls from equipment
+- Snowboards: Pulls from equipment
 
 
 ## Progress
