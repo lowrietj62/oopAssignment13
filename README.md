@@ -37,3 +37,5 @@ The assignment is to create a ski rental shop system using Object Oriented Princ
 ```bash
 python main.py
 ```
+
+hello
