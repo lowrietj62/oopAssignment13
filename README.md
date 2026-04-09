@@ -25,6 +25,8 @@ The assignment is to create a ski rental shop system using Object Oriented Princ
 | Write and test those classes | In Progress |
 | Write a README.md file for the assignment | In Progress |
 
+** Please note: In progress CAN mean that it's finished, but will NOT been set as DONE until ALL team members review changes and agree that it's ready or considered finished.
+
 ## Requirements
 
 - Python 3.x (Doesn't matter which version of Python you use to run this so long as it's Python Version 3)
