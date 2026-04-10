@@ -24,4 +24,24 @@ class Rental_Shop:
         print("Skis Available", skis)
         print("Snowboards Available", snowboards)
 
+    # Process Rental
+    def process_rental(self, rental):
+        
+        equipment_type = rental.getEquipmentType()
+        quantity = rental.getQuantity()
 
+        # Check availability
+        if not self._inventory.check_availability(equipment_type, quantity):
+            print("Requested quantity not available.")
+            return None
+        
+        # Update inventory
+        self._inventory.update_stock(equipment_type, quantity, rent = True)
+
+        # Add rental to active list
+        self._activeRentals.appent(rental)
+
+        print("Rental processed succesfully")
+        return rental
+    
+    
