@@ -52,4 +52,43 @@ class Rental_Shop:
     # Return Rental (Triggers Billing)
     def return_rental(self, rental):
 
-        if rental 
+        found = False
+
+        # Check if rental exists
+        for r in self._activeRentals:
+            if r == rental:
+                found = True
+
+        if found == True:
+
+            equipment_type = rental.getEquipmentType()
+            quantity = rental.getQuantity()
+
+            # Update inventory (return items)
+            self._inventory.update_stock(equipment_type, quantity, rent = False)
+
+            # Calculate bill
+            bill = rental.calculate_bill()
+
+            # Remove rental
+            for r in self._activeRentals:
+                if r == rental:
+                    self._activeRentals.remove(r)
+                    break
+
+            print("Rental returned successfully.")
+            print("Total Bill: $", bill)
+
+            return bill
+        
+        else:
+            print("Rental not found.")
+            return None
+        
+    # Getter for active rentals
+    def getActiveRentals(self):
+        return self._activeRentals
+    
+    # Getter for inventory
+    def getInventory(self):
+        return self._inventory
