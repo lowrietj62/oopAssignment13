@@ -13,4 +13,6 @@ class Rental:
         }
     
     def calculate_bill():
-        
+        # If statements for best price (check for best price logic, family plan, and coupon codes)
+        # Add code for calculation of prices
+        return total_price
