@@ -1,8 +1,12 @@
-
 class Inventory:
+
     def __init__(self, skis_available=20, snowboards_available=15):
         self.skis_available = skis_available
         self.snowboards_available = snowboards_available
+
+    # ADDED: rental_shop.py was already calling get_stock(), so this was added to match
+    def get_stock(self):
+        return self.skis_available, self.snowboards_available
 
     def check_availability(self, equipment_type, quantity):
         if equipment_type.lower() == "ski":
@@ -12,20 +16,23 @@ class Inventory:
         else:
             return False
 
-    def update_stock(self, equipment_type, quantity):
+    # CHANGED: added rent=True/False parameter so this method handles both
+    # renting out (deduct) and returning (add back), matching what rental_shop.py expected
+    def update_stock(self, equipment_type, quantity, rent=True):
+        """
+        rent=True  -> deduct stock (renting out)
+        rent=False -> add stock back (returning)
+        """
         if equipment_type.lower() == "ski":
-            self.skis_available += quantity
-        elif equipment_type.lower() == "snowboard":
-            self.snowboards_available += quantity
-
-    def rent_items(self, equipment_type, quantity):
-        if self.check_availability(equipment_type, quantity):
-            if equipment_type.lower() == "ski":
+            if rent:
                 self.skis_available -= quantity
-            elif equipment_type.lower() == "snowboard":
+            else:
+                self.skis_available += quantity
+        elif equipment_type.lower() == "snowboard":
+            if rent:
                 self.snowboards_available -= quantity
-            return True
-        return False
+            else:
+                self.snowboards_available += quantity
 
     def display_inventory(self):
         print("Current Inventory:")

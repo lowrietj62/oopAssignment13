@@ -1,4 +1,4 @@
-from inventory import Inventory
+from classes.inventory import Inventory
 
 #--------------------------------------------------------------------------
 # Class Name: Rental_Shop
@@ -14,36 +14,32 @@ class Rental_Shop:
         self._inventory = Inventory(skis, snowboards)
 
         # List to track active rentals
-        self._activeRentals = []
+        self._active_rentals = []
 
     # Display Inventory
-    def display_inventory(self): 
-
-        skis, snowboards = self._inventory.get_stock()
-
-        print("Current Inventory:")
-        print("Skis Available", skis)
-        print("Snowboards Available", snowboards)
+    # FIXED: Made an adjustment to fit with the changes done in inventory class
+    def display_inventory(self):
+        self._inventory.display_inventory()
 
     # Process Rental
     def process_rental(self, rental):
         
-        equipment_type = rental.getEquipmentType()
-        quantity = rental.getQuantity()
+        equipment_type = rental.get_equipment_type()
+        quantity = rental.get_quantity()
 
         # Check availability
         available  = self._inventory.check_availability(equipment_type, quantity)
 
-        if available == True:
+        if available:
             
-            # Update inventory
-            self._inventory.update_stock(equipment_type, quantity, rent = True)
-
-            # Add rental to active list
-            self._activeRentals.appent(rental)
-
-            print("Rental processed succesfully")
-            return rental      
+            # CHANGED: update_stock now takes rent=True to deduct stock on rental
+            self._inventory.update_stock(equipment_type, quantity, rent=True)
+ 
+            # CHANGED: fixed typo from original - appent -> append
+            self._active_rentals.append(rental)
+ 
+            print("Rental processed successfully.")
+            return rental
          
         else:
             print("Requested quantity not available.")
@@ -52,43 +48,31 @@ class Rental_Shop:
     # Return Rental (Triggers Billing)
     def return_rental(self, rental):
 
-        found = False
-
-        # Check if rental exists
-        for r in self._activeRentals:
-            if r == rental:
-                found = True
-
-        if found == True:
-
-            equipment_type = rental.getEquipmentType()
-            quantity = rental.getQuantity()
-
-            # Update inventory (return items)
-            self._inventory.update_stock(equipment_type, quantity, rent = False)
-
-            # Calculate bill
-            bill = rental.calculate_bill()
-
-            # Remove rental
-            for r in self._activeRentals:
-                if r == rental:
-                    self._activeRentals.remove(r)
-                    break
-
-            print("Rental returned successfully.")
-            print("Total Bill: $", bill)
-
-            return bill
-        
-        else:
+        # CHANGED: simplified from original for loop + found flag to a direct membership check
+        if rental not in self._active_rentals:
             print("Rental not found.")
             return None
-        
+
+        equipment_type = rental.get_equipment_type()
+        quantity = rental.get_quantity()
+ 
+        # CHANGED: update_stock now takes rent=False to add stock back on return
+        self._inventory.update_stock(equipment_type, quantity, rent=False)
+ 
+        # ADDED: print_bill() called here so the bill displays on return
+        rental.print_bill()
+        bill = rental.calculate_bill()
+ 
+        # Remove rental from active list
+        self._active_rentals.remove(rental)
+ 
+        print("Rental returned successfully.")
+        return bill
+    
     # Getter for active rentals
-    def getActiveRentals(self):
-        return self._activeRentals
+    def get_active_rentals(self):
+        return self._active_rentals
     
     # Getter for inventory
-    def getInventory(self):
+    def get_inventory(self):
         return self._inventory
