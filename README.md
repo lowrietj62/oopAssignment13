@@ -12,8 +12,8 @@ The assignment is to create a ski rental shop system using Object Oriented Princ
 - Rental Shop: The main class for handling anything to do with the ski rental shop
 - Inventory: Base class for tracking available rental equipment
 - Equipment: Base class for skis and snowboards
-- Skis: Class for handling anything to do with skis seperately
-- Snowboards: Class for handling anything to do with snowboards seperately
+- Skis: Class for handling anything to do with skis separately
+- Snowboards: Class for handling anything to do with snowboards separately
 
 ## Data for each Class
 

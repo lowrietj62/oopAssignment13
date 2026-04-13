@@ -11,3 +11,6 @@ class Rental:
             "qty" : self._quantity,
             "type" : self._rental_type,
         }
+    
+    def calculate_bill():
+        
