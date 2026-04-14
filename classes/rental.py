@@ -89,6 +89,19 @@ class Rental:
         total = subtotal * (1 - discount)
         return round(total, 2)
  
+    # ADDED: returns a human-readable duration string (e.g. "2 hours", "1 day", "3 weeks")
+    def _duration_label(self):
+        unit_map = {
+            "hourly": "hour",
+            "daily":  "day",
+            "weekly": "week",
+        }
+        unit = unit_map.get(self._rental_type, self._rental_type)
+        label = f"{self._duration} {unit}"
+        if self._duration != 1:
+            label += "s"
+        return label
+ 
     # ADDED: prints a formatted bill breakdown when equipment is returned
     def print_bill(self):
         base = self._best_price_per_item()
@@ -100,7 +113,7 @@ class Rental:
         print(f"{'='*38}")
         print(f"  Equipment : {self._item_type}")
         print(f"  Quantity  : {self._quantity}")
-        print(f"  Period    : {self._rental_type} x {self._duration}")
+        print(f"  Duration  : {self._duration_label()}")
         print(f"  Rate/item : ${base:.2f} (best price)")
         print(f"  Subtotal  : ${subtotal:.2f}")
         if self._family_discount_applies():
