@@ -2,7 +2,7 @@
 
 from abc import ABC
 #--------------------------------------------------------------------------
-# Class Name: Equippment
+# Class Name: Equipment
 # Description: Abstract base class for rental equipment; stores hourly, daily, and weekly rates
 #--------------------------------------------------------------------------
 class Equipment(ABC):
