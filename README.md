@@ -4,61 +4,71 @@ Repository for Assignment 13 - Object Oriented Programming with a ski rental sys
 
 ## Overview
 
-The assignment is to create a ski rental shop system using Object Oriented Principles (OOP) in Python. The system manages customers, inventory, skis, and snowboards through a set of well-defined classes.
+The assignment is to create a ski rental shop system using Object Oriented Principles (OOP) in Python. The system manages inventory, skis, and snowboards through a set of well-defined classes with support for hourly, daily, and weekly rentals, best-price logic, family discounts, and coupon codes.
+
+## Project Structure
+
+```
+oopAssignment13/
+├── main.py
+├── README.md
+└── classes/
+    ├── equipment.py
+    ├── inventory.py
+    ├── rental.py
+    ├── rental_shop.py
+    ├── skis.py
+    └── snowboards.py
+```
 
 ## Classes
 
-- Rental: Represents the rental object
-- Rental Shop: The main class for handling anything to do with the ski rental shop
-- Inventory: Base class for tracking available rental equipment
-- Equipment: Base class for skis and snowboards
-- Skis: Class for handling anything to do with skis separately
-- Snowboards: Class for handling anything to do with snowboards separately
+- **Equipment** (`classes/equipment.py`): Abstract base class for rental equipment; stores hourly, daily, and weekly rates
+- **Ski** (`classes/skis.py`): Concrete subclass of Equipment with hard-coded ski rates
+- **Snowboard** (`classes/snowboards.py`): Concrete subclass of Equipment with hard-coded snowboard rates
+- **Inventory** (`classes/inventory.py`): Tracks available skis and snowboards; handles stock checks and updates
+- **Rental** (`classes/rental.py`): Represents a single rental transaction; handles billing, discounts, and bill printing
+- **Rental_Shop** (`classes/rental_shop.py`): Main shop class; coordinates inventory and active rentals
 
 ## Data for each Class
 
-- Rental: equipment_type, quantity, period_type, duration, coupon_code
-- Rental_Shop: Instance of Inventory class, List of active rentals
-- Inventory: Available Skis/Snowboards
-- Equipment: equipment_id, rental_rate_hourly, rental_rate_daily, rental_rate_weekly
-- Skis: Hard-coded rates
-- Snowboards: Hard-coded rates
+- **Equipment**: `hourly_rate`, `daily_rate`, `weekly_rate`
+- **Ski**: Hard-coded rates — $15/hr, $50/day, $200/week
+- **Snowboard**: Hard-coded rates — $10/hr, $40/day, $160/week
+- **Inventory**: `skis_available`, `snowboards_available`
+- **Rental**: `item_type`, `quantity`, `rental_type`, `duration`, `coupon_code`
+- **Rental_Shop**: Instance of `Inventory`, list of active `Rental` objects
 
-## Methods each class has
+## Methods per Class
 
-- Rental: calculate_bill() [This is where the best price logic lives, family discount and coupon discount checks as well]
-- Rental_Shop: display_inventory(), process_rental(...), return_rental(rental object) [This will trigger billing]
-- Inventory: check_availability(type, quantity), update_stock(type, quantity)
-- Equipment: get_rates(), equipment_type()
-- Skis: Override equipment_type()
-- Snowboards: Override equipment_type()
+- **Equipment**: `get_hourly_rate()`, `get_daily_rate()`, `get_weekly_rate()`, `get_rates()`, `equipment_type()` (abstract)
+- **Ski / Snowboard**: Override `equipment_type()` → returns `"Ski"` or `"Snowboard"`
+- **Inventory**: `get_stock()`, `check_availability(type, quantity)`, `update_stock(type, quantity, rent=True)`, `display_inventory()`
+- **Rental**: `get_equipment_type()`, `get_quantity()`, `get_detail()`, `calculate_bill()`, `print_bill()`
+- **Rental_Shop**: `display_inventory()`, `process_rental(rental)`, `return_rental(rental)`, `get_active_rentals()`, `get_inventory()`
 
-## Relationships between classes
+## Pricing Logic
 
-- Rental: Its own object (represents the rental item)
-- Rental Shop: Pulls from Inventory
-- Inventory: Base class for rental shop
-- Equipment: Base class for skis and snowboards
-- Skis: Pulls from equipment
-- Snowboards: Pulls from equipment
+Billing lives in `Rental.calculate_bill()` and applies the following rules in order:
 
+1. **Best price** — automatically selects the cheapest rate for the rental duration:
+   - Hourly: compared against the daily rate (cheaper at 4+ hours)
+   - Daily: full weeks are priced at the weekly rate when it saves money
+   - Weekly: straight weekly rate × duration
+2. **Family discount** — 25% off when renting 3–5 items total
+3. **Coupon discount** — 10% off when the coupon code ends in `BBP` (e.g. `SKIBBP`, `MYBBP`)
+4. Discounts **stack** when both apply
 
-## Progress
+## Relationships Between Classes
 
-| Task | Status |
-|------|--------|
-| Identify the classes needed for this system | Done! |
-| Determine the data each class should store | In Progress |
-| Determine the methods each class should have | In Progress |
-| Design relationships between the classes, if any | In Progress |
-| Write and test those classes | In Progress |
-| Write a README.md file for the assignment | In Progress |
-
-** Please note: In progress CAN mean that it's finished, but will NOT been set as DONE until ALL team members review changes and agree that it's ready or considered finished.
+- `Rental_Shop` → contains an `Inventory` instance and a list of `Rental` objects
+- `Rental_Shop` delegates stock management to `Inventory`
+- `Ski` and `Snowboard` → extend `Equipment`
+- `Rental` → standalone transaction object consumed by `Rental_Shop`
 
 ## Requirements
 
-- Python 3.x (Doesn't matter which version of Python you use to run this so long as it's Python Version 3)
+- Python 3.x
 - No external dependencies
 
 ## Usage
@@ -66,3 +76,18 @@ The assignment is to create a ski rental shop system using Object Oriented Princ
 ```bash
 python main.py
 ```
+
+> **Note:** `main.py` is currently used as a test driver to verify class behavior. It exercises rentals, returns, inventory updates, edge cases (insufficient stock), family discounts, coupon codes, and stacked discounts.
+
+## Progress
+
+| Task | Status |
+|------|--------|
+| Identify the classes needed for this system | Done |
+| Determine the data each class should store | Done |
+| Determine the methods each class should have | Done |
+| Design relationships between the classes | Done |
+| Write and test those classes | Done |
+| Write a README.md file for the assignment | Done |
+
+> **Note:** "In Progress" means the work may be functionally complete but has not yet been reviewed and signed off by all team members.
