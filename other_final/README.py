@@ -59,3 +59,10 @@
     # Classes and objects
     # Encapsulation
     # Method and class interaction
+
+
+#FINAL PROJECT PART 2: 
+#STEP 1: NEW CUSTOMER RENTAL
+#STEP 2: RENTAL RETURN
+#STEP 3: SHOW INVENTORY
+#STEP 4: END OF DAY
