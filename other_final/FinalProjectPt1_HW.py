@@ -293,3 +293,33 @@ def process_return(shop, total_revenue):
     return total_revenue
 
 
+# -----------------------------
+# Main
+# -----------------------------
+if __name__ == "__main__":
+    shop = Shop("Bob's Rentals")
+
+    # Initial inventory
+    shop.inventory.add_stock("skis", 10)
+    shop.inventory.add_stock("snowboards", 10)
+
+    total_revenue = 0
+
+    while True: 
+        print("\n1. New Customer Rental")
+        print("2. Rental Return")
+        print("3. Show Inventory")
+        print("4. End of Day")
+
+        choice = input("Select an option: ")
+
+        if choice == "2":
+            total_revenue = process_return(shop, total_revenue)
+
+        elif choice == "3":
+            print("Inventory:", shop.list_available_equipment())
+
+        elif choice == "4":
+            print("\nEnd of Day Report")
+            print("Total Revenue: $", round(total_revenue, 2))
+            break
