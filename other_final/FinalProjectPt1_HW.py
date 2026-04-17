@@ -248,3 +248,48 @@ class Customer:
     def is_adult(self):
         # Checks if customer is an adult.
         return self.age >= 18
+    
+
+# -----------------------------
+# Rental Return Function
+# -----------------------------
+def process_return(shop, total_revenue): 
+    phone = input("Enter customer phone number: ")
+
+    rental_found = None
+
+    for rental in shop.rentals:
+        if rental.customer.phone == phone: 
+            rental_found = rental
+            break
+
+    if rental_found is None: 
+        print("No rental found for this phone number.")
+        return total_revenue
+    
+    coupon = input("Enter coupon code (or press Enter to skip): ")
+
+    pre_total = rental_found.calculate_cost()
+    final_total = rental_found.apply_discounts(pre_total, coupon)
+
+    discount_amount = pre_total - final_total
+
+    print("\n----- Invoice -----")
+    print("Customer:", rental_found.customer.name)
+    print("Equipment:", rental_found.equipment_type)
+    print("Quantity:", rental_found.quantity)
+    print("Rental Period:", rental_found.rental_period)
+    print("Duration:", rental_found.duration)
+    print("Total before discount: $", pre_total)
+    print("Discount: $", round(discount_amount, 2))
+    print("Final Total: $", round(final_total, 2))
+    print("---------------------\n")
+
+    shop.return_rental(rental_found, coupon)
+    shop.rentals.remove(rental_found)
+
+    total_revenue += final_total
+
+    return total_revenue
+
+
