@@ -2,6 +2,9 @@
 
 Repository for Assignment 13 - Object Oriented Programming with a ski rental system.
 
+## Concepts Used
+Object Oriented Programming (OOP)
+
 ## Overview
 
 The assignment is to create a ski rental shop system using Object Oriented Principles (OOP) in Python. The system manages inventory, skis, and snowboards through a set of well-defined classes with support for hourly, daily, and weekly rentals, best-price logic, family discounts, and coupon codes.
