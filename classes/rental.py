@@ -1,3 +1,5 @@
+from classes.customer import Customer
+
 class Rental:
     
     # CHANGED: added duration and coupon_code params - needed for billing logic
@@ -108,6 +110,7 @@ class Rental:
         subtotal = base * self._quantity
         total = self.calculate_bill()
  
+        print(f" Customer name: {self.first_name} {self.last_name}")
         print(f"\n{'='*38}")
         print(f"  RENTAL BILL")
         print(f"{'='*38}")
