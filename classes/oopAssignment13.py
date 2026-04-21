@@ -108,6 +108,7 @@ class Snowboard(Equipment):
         return "Snowboard"
     
 
+from classes.customer import Customer
 #--------------------------------------------------------------------------
 # Class Name: Rental
 # Description: Represents a single rental transaction; handles billing, discounts, and bill printing
@@ -209,6 +210,7 @@ class Rental:
         subtotal = base * self._quantity
         total = self.calculate_bill()
  
+        print(f" Customer name: {self.first_name} {self.last_name}")
         print(f"\n{'='*38}")
         print(f"  RENTAL BILL")
         print(f"{'='*38}")
