@@ -301,7 +301,7 @@ if __name__ == "__main__":
 
     # Initial inventory
     shop.inventory.add_stock("skis", 10)
-    shop.inventory.add_stock("snowboards", 10)
+    shop.inventory.add_stock("snowboard", 10)
 
     total_revenue = 0
 
