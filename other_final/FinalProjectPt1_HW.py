@@ -162,7 +162,7 @@ class Rental:
     def apply_discounts(self, total, coupon_code=None):
         # Applies discounts based on business rules.
 
-        # Family discount (3-5 rentals)
+        # Family discount (3�5 rentals)
         if 3 <= self.quantity <= 5:
             total *= 0.75
 
@@ -249,77 +249,66 @@ class Customer:
         # Checks if customer is an adult.
         return self.age >= 18
     
-
-# -----------------------------
-# Rental Return Function
-# -----------------------------
-def process_return(shop, total_revenue): 
-    phone = input("Enter customer phone number: ")
-
-    rental_found = None
-
-    for rental in shop.rentals:
-        if rental.customer.phone == phone: 
-            rental_found = rental
-            break
-
-    if rental_found is None: 
-        print("No rental found for this phone number.")
-        return total_revenue
     
-    coupon = input("Enter coupon code (or press Enter to skip): ")
+     # 1. New Customer Rental
+        if choice == "1":
+            print("\n--- New Customer Rental ---")
 
-    pre_total = rental_found.calculate_cost()
-    final_total = rental_found.apply_discounts(pre_total, coupon)
+            equipment_type = get_equipment_choice()
+            quantity = get_positive_int("Enter quantity: ")
+            rental_period = get_rental_period()
+            duration = get_positive_int(f"Enter number of {rental_period}s: ")
+            coupon_code = input("Enter coupon code if any (or press Enter for none): ").strip()
+            if coupon_code == "":
+                coupon_code = None
 
-    discount_amount = pre_total - final_total
+            # Check availability before customer info
+            if not shop.inventory.is_available(equipment_type, quantity):
+                print("Sorry, not enough equipment available.")
 
-    print("\n----- Invoice -----")
-    print("Customer:", rental_found.customer.name)
-    print("Equipment:", rental_found.equipment_type)
-    print("Quantity:", rental_found.quantity)
-    print("Rental Period:", rental_found.rental_period)
-    print("Duration:", rental_found.duration)
-    print("Total before discount: $", pre_total)
-    print("Discount: $", round(discount_amount, 2))
-    print("Final Total: $", round(final_total, 2))
-    print("---------------------\n")
+            total_before_discount = temp_rental.calculate_cost()
+            final_total = temp_rental.apply_discounts(total_before_discount, coupon_code)
+            discount_amount = total_before_discount - final_total
 
-    shop.return_rental(rental_found, coupon)
-    shop.rentals.remove(rental_found)
+            # undo temporary rental so inventory is not permanently reduced yet
+            shop.inventory.return_item(equipment_type, quantity)
+            shop.rentals.remove(temp_rental)
 
-    total_revenue += final_total
+            print("\n--- Rental Estimate ---")
+            print(f"Equipment Type: {equipment_type}")
+            print(f"Quantity: {quantity}")
+            print(f"Rental Period: {rental_period}")
+            print(f"Duration: {duration}")
+            print(f"Total Before Discount: ${total_before_discount:.2f}")
+            print(f"Discount: ${discount_amount:.2f}")
+            print(f"Estimated Final Total: ${final_total:.2f}")
 
-    return total_revenue
+            proceed = input("Would the customer like to proceed? (y/n): ").strip().lower()
+            if proceed != "y":
+                print("Rental canceled.")
 
+            # Customer info
+            last_name = get_nonempty_string("Enter customer last name: ")
+            phone = get_phone("Enter customer phone number: ")
 
-# -----------------------------
-# Main
-# -----------------------------
-if __name__ == "__main__":
-    shop = Shop("Bob's Rentals")
+            # required by their Customer class
+            email = get_email("Enter customer email: ")
+            age = get_age("Enter customer age: ")
 
-    # Initial inventory
-    shop.inventory.add_stock("skis", 10)
-    shop.inventory.add_stock("snowboard", 10)
+            customer = Customer(last_name, phone, email, age)
+            shop.add_customer(customer)
 
-    total_revenue = 0
+            rental = shop.create_rental(customer, equipment_type, quantity, rental_period, duration)
 
-    while True: 
-        print("\n1. New Customer Rental")
-        print("2. Rental Return")
-        print("3. Show Inventory")
-        print("4. End of Day")
+            if rental is None:
+                print("Rental could not be completed.")
 
-        choice = input("Select an option: ")
+            # store coupon on rental object for return time
+            rental.coupon_code = coupon_code
 
-        if choice == "2":
-            total_revenue = process_return(shop, total_revenue)
+            if equipment_type == "skis":
+                total_skis_rented += quantity
+            else:
+                total_snowboards_rented += quantity
 
-        elif choice == "3":
-            print("Inventory:", shop.list_available_equipment())
-
-        elif choice == "4":
-            print("\nEnd of Day Report")
-            print("Total Revenue: $", round(total_revenue, 2))
-            break
+            print("Rental completed successfully.")
