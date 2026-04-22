@@ -130,6 +130,7 @@ class Rental:
         self.quantity = quantity
         self.rental_period = rental_period
         self.duration = duration
+        self.coupon_code = None
 
     def display_info(self):
         # Displays rental details.
@@ -248,67 +249,71 @@ class Customer:
     def is_adult(self):
         # Checks if customer is an adult.
         return self.age >= 18
-    
-    
-     # 1. New Customer Rental
+            
+def get_nonempty_string(prompt: str):
+    while True:
+        val = input(prompt).strip()
+        if val:
+            return val
+        print("  > Input cannot be empty. Please try again.")
+
+
+def get_positive_int(prompt: str):
+    while True:
+        try:
+            val = int(input(prompt).strip())
+            if val > 0:
+                return val
+            print("  > Value must be a positive integer.")
+        except ValueError:
+            print("  > Please enter a whole number.")
+
+
+def get_age(prompt: str):
+    while True:
+        try:
+            val = int(input(prompt).strip())
+            if val >= 0:
+                return val
+            print("  > Age cannot be negative.")
+        except ValueError:
+            print("  > Please enter a valid age.")
+
+
+def get_phone(prompt: str):
+    """Accept any non-empty string for phone (digits, dashes, parens, spaces)."""
+    while True:
+        val = input(prompt).strip()
+        digits = "".join(c for c in val if c.isdigit())
+        if len(digits) >= 7:
+            return val
+        print("  > Please enter a valid phone number (at least 7 digits).")
+
+
+def get_email(prompt: str):
+    while True:
+        val = input(prompt).strip()
+        if "@" in val and "." in val.split("@")[-1]:
+            return val
+        print("  > Please enter a valid email address.")
+
+
+def get_equipment_choice():
+    print("  Equipment types: (1) Skis  (2) Snowboard")
+    while True:
+        choice = input("  Select equipment type: ").strip()
         if choice == "1":
-            print("\n--- New Customer Rental ---")
+            return "skis"
+        if choice == "2":
+            return "snowboard"
+        print("  > Enter 1 for Skis or 2 for Snowboard.")
 
-            equipment_type = get_equipment_choice()
-            quantity = get_positive_int("Enter quantity: ")
-            rental_period = get_rental_period()
-            duration = get_positive_int(f"Enter number of {rental_period}s: ")
-            coupon_code = input("Enter coupon code if any (or press Enter for none): ").strip()
-            if coupon_code == "":
-                coupon_code = None
 
-            # Check availability before customer info
-            if not shop.inventory.is_available(equipment_type, quantity):
-                print("Sorry, not enough equipment available.")
-
-            total_before_discount = temp_rental.calculate_cost()
-            final_total = temp_rental.apply_discounts(total_before_discount, coupon_code)
-            discount_amount = total_before_discount - final_total
-
-            # undo temporary rental so inventory is not permanently reduced yet
-            shop.inventory.return_item(equipment_type, quantity)
-            shop.rentals.remove(temp_rental)
-
-            print("\n--- Rental Estimate ---")
-            print(f"Equipment Type: {equipment_type}")
-            print(f"Quantity: {quantity}")
-            print(f"Rental Period: {rental_period}")
-            print(f"Duration: {duration}")
-            print(f"Total Before Discount: ${total_before_discount:.2f}")
-            print(f"Discount: ${discount_amount:.2f}")
-            print(f"Estimated Final Total: ${final_total:.2f}")
-
-            proceed = input("Would the customer like to proceed? (y/n): ").strip().lower()
-            if proceed != "y":
-                print("Rental canceled.")
-
-            # Customer info
-            last_name = get_nonempty_string("Enter customer last name: ")
-            phone = get_phone("Enter customer phone number: ")
-
-            # required by their Customer class
-            email = get_email("Enter customer email: ")
-            age = get_age("Enter customer age: ")
-
-            customer = Customer(last_name, phone, email, age)
-            shop.add_customer(customer)
-
-            rental = shop.create_rental(customer, equipment_type, quantity, rental_period, duration)
-
-            if rental is None:
-                print("Rental could not be completed.")
-
-            # store coupon on rental object for return time
-            rental.coupon_code = coupon_code
-
-            if equipment_type == "skis":
-                total_skis_rented += quantity
-            else:
-                total_snowboards_rented += quantity
-
-            print("Rental completed successfully.")
+def get_rental_period():
+    print("  Rental periods: (1) Hourly  (2) Daily  (3) Weekly")
+    while True:
+        choice = input("  Select rental period: ").strip()
+        mapping = {"1": "hourly", "2": "daily", "3": "weekly"}
+        if choice in mapping:
+            return mapping[choice]
+        print("  > Enter 1, 2, or 3.")
