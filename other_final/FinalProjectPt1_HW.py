@@ -130,7 +130,7 @@ class Rental:
         self.quantity = quantity
         self.rental_period = rental_period
         self.duration = duration
-        self.coupon_code = None
+        self.coupon_code: str | None = None
 
     def display_info(self):
         # Displays rental details.
