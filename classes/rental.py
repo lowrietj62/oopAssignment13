@@ -105,12 +105,12 @@ class Rental:
         return label
  
     # ADDED: prints a formatted bill breakdown when equipment is returned
-    def print_bill(self):
+    def print_bill(self, first_name, last_name):
         base = self._best_price_per_item()
         subtotal = base * self._quantity
         total = self.calculate_bill()
  
-        print(f" Customer name: {self.first_name} {self.last_name}")
+        print(f" Customer name: {first_name} {last_name}")
         print(f"\n{'='*38}")
         print(f"  RENTAL BILL")
         print(f"{'='*38}")
