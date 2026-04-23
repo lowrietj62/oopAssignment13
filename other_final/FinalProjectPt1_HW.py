@@ -163,7 +163,7 @@ class Rental:
     def apply_discounts(self, total, coupon_code=None):
         # Applies discounts based on business rules.
 
-        # Family discount (3�5 rentals)
+        # Family discount (3-5 rentals)
         if 3 <= self.quantity <= 5:
             total *= 0.75
 
